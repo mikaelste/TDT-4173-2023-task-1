@@ -3,15 +3,24 @@ import pandas as pd
 # IMPORTANT: DO NOT USE ANY OTHER 3RD PARTY PACKAGES
 # (math, random, collections, functools, etc. are perfectly fine)
 
+class Node(object):
+    def __init__(self):
+        self.value = None
+        self.decision = None
+        self.left = None
+        self.right = None
+    
+    
 
 class DecisionTree:
     
-    def __init__():
+    def __init__(self):
         # NOTE: Feel free add any hyperparameters 
         # (with defaults) as you see fit
-        pass
+        self.root = Node()
+        
     
-    def fit(self, X, y):
+    def fit(self, X:pd.DataFrame, y: pd.Series):
         """
         Generates a decision tree for classification
         
@@ -22,9 +31,9 @@ class DecisionTree:
             y (pd.Series): a vector of discrete ground-truth labels
         """
         # TODO: Implement 
-        raise NotImplementedError()
+        
     
-    def predict(self, X):
+    def predict(self, X: pd.DataFrame):
         """
         Generates predictions
         
