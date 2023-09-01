@@ -20,7 +20,6 @@ class KMeans:
             distortion = euclidean_distortion(X, kmeans.cluster_assignments)
             distortions.append(distortion)
 
-        # Find the "elbow point" using a simple heuristic
         optimal_clusters = np.argmin(np.diff(distortions)) + 1
 
         return optimal_clusters
@@ -37,9 +36,7 @@ class KMeans:
         self.centroids = X[random_indices]
 
         for _ in range(self.max_iters):
-            distances = cross_euclidean_distance_with_improved_readability(
-                X, self.centroids
-            )
+            distances = cross_euclidean_distance(X, self.centroids)
             self.cluster_assignments = np.argmin(distances, axis=1)
 
             new_centroids = np.array(
@@ -69,9 +66,7 @@ class KMeans:
             converged = False
 
             for _ in range(self.max_iters):
-                distances = cross_euclidean_distance_with_improved_readability(
-                    X, centroids
-                )
+                distances = cross_euclidean_distance(X, centroids)
                 cluster_assignments = np.argmin(distances, axis=1)
 
                 new_centroids = np.array(
@@ -105,9 +100,7 @@ class KMeans:
 
     def predict(self, X):
         X = X.values
-        distances = cross_euclidean_distance_with_improved_readability(
-            X, self.centroids
-        )
+        distances = cross_euclidean_distance(X, self.centroids)
         cluster_assignments = np.argmin(distances, axis=1)
         return cluster_assignments
 
