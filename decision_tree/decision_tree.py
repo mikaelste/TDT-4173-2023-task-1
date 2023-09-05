@@ -18,8 +18,6 @@ class DecisionTree:
         # (with defaults) as you see fit
         self.root = Node()
 
-        self.root = Node()
-
     def fit(self, X: pd.DataFrame, y: pd.Series):
         """
         Generates a decision tree for classification
@@ -39,9 +37,7 @@ class DecisionTree:
         node.default = np.argmax(counts)
 
         if len(np.unique(y)) != 1:
-            gains = np.array(
-                [self._information_gain_categorical(y, X[attr]) for attr in X.columns]
-            )
+            gains = np.array([self._information_gain(y, X[attr]) for attr in X.columns])
 
             max_gain_attr = np.argmax(gains)
 

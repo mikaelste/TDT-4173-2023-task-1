@@ -7,34 +7,32 @@ import pandas as pd
 
 
 class LogisticRegression:
-    def __init__(self, learning_rate=0.01, epochs=10000):
+    def __init__(self, learning_rate=0.01, epochs=10000, bias=None):
         self.learning_rate = learning_rate
         self.epochs = epochs
+        self.bias = bias
         self.weights = None
-        self.bias = None
         self.accuracy = None
+
+        self.learning_rate_decrease_factor = self.learning_rate / self.epochs
 
     def fit(self, X, y):
         num_samples, num_features = X.shape
-        learning_rate_decrease_factor = self.learning_rate / self.epochs
 
-        # Initialize weights and bias
-        self.weights = np.zeros(num_features)
+        self.weights = np.ones(num_features)
         self.bias = 0
 
         for _ in range(self.epochs):
-            linear_model = np.dot(X, self.weights) + self.bias
+            linear_model = np.matmul(X, self.weights) + self.bias
             y_predicted = sigmoid(linear_model)
 
-            # Compute gradients in a vectorized way
-            dw = (1 / num_samples) * np.dot(X.T, (y_predicted - y))
-            db = (1 / num_samples) * np.sum(y_predicted - y)
+            dw = np.matmul(X.T, (y_predicted - y))
+            db = np.sum(y_predicted - y)
 
-            # Update parameters
             self.weights -= self.learning_rate * dw
             self.bias -= self.learning_rate * db
 
-            self.learning_rate -= learning_rate_decrease_factor
+            self.learning_rate -= self.learning_rate_decrease_factor
 
     def predict(self, X):
         linear_model = np.dot(X, self.weights) + self.bias
