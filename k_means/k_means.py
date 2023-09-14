@@ -37,7 +37,7 @@ class KMeans:
     def get_centroids(self):
         return self.centroids
 
-    # --- Attempt on auto custering
+    # --- Attempt on auto custering ---
     def find_optimal_clusters(self, X, max_clusters=10):
         distortions = []
         for num_clusters in range(1, max_clusters + 1):
@@ -55,8 +55,10 @@ class KMeans:
         self.n_clusters = optimal_clusters
         self.fit(X)
 
+    # --- Attempt on auto custering end ---
 
-# --- Some utility functions
+
+# --- Some utility functions --- #
 
 
 def euclidean_distance(x, y):
