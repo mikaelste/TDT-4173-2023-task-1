@@ -11,23 +11,6 @@ class KMeans:
         self.centroids = None
         self.cluster_assignments = cluster_assignments
 
-    def find_optimal_clusters(self, X, max_clusters=10):
-        distortions = []
-        for num_clusters in range(1, max_clusters + 1):
-            kmeans = KMeans(n_clusters=num_clusters, max_iters=self.max_iters)
-            kmeans.fit(X)
-            distortion = euclidean_distortion(X, kmeans.cluster_assignments)
-            distortions.append(distortion)
-
-        optimal_clusters = np.argmin(np.diff(distortions)) + 1
-
-        return optimal_clusters
-
-    def fit_auto(self, X, max_clusters=10):
-        optimal_clusters = self.find_optimal_clusters(X, max_clusters)
-        self.n_clusters = optimal_clusters
-        self.fit(X)
-
     def fit(self, X):
         X = X.values
         n_samples, n_features = X.shape
@@ -38,12 +21,7 @@ class KMeans:
             distances = cross_euclidean_distance(X, self.centroids)
             self.cluster_assignments = np.argmin(distances, axis=1)
 
-            new_centroids = np.array(
-                [
-                    X[self.cluster_assignments == i].mean(axis=0)
-                    for i in range(self.n_clusters)
-                ]
-            )
+            new_centroids = np.array([X[self.cluster_assignments == i].mean(axis=0) for i in range(self.n_clusters)])
 
             if np.allclose(self.centroids, new_centroids):
                 break
@@ -58,6 +36,24 @@ class KMeans:
 
     def get_centroids(self):
         return self.centroids
+
+    # --- Attempt on auto custering
+    def find_optimal_clusters(self, X, max_clusters=10):
+        distortions = []
+        for num_clusters in range(1, max_clusters + 1):
+            kmeans = KMeans(n_clusters=num_clusters, max_iters=self.max_iters)
+            kmeans.fit(X)
+            distortion = euclidean_distortion(X, kmeans.cluster_assignments)
+            distortions.append(distortion)
+
+        optimal_clusters = np.argmin(np.diff(distortions)) + 1
+
+        return optimal_clusters
+
+    def fit_auto(self, X, max_clusters=10):  # attempt on making an automatic fit
+        optimal_clusters = self.find_optimal_clusters(X, max_clusters)
+        self.n_clusters = optimal_clusters
+        self.fit(X)
 
 
 # --- Some utility functions
